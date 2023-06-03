@@ -2,7 +2,9 @@ package com.example.dptermproject.todo
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dptermproject.convertMonthToString
 import com.example.dptermproject.databinding.ActivityTodoBinding
@@ -10,7 +12,7 @@ import com.example.dptermproject.databinding.ActivityTodoBinding
 class TodoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTodoBinding
-    private val data = arrayListOf<Todo>()
+    private val viewModel:TodoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,28 +31,24 @@ class TodoActivity : AppCompatActivity() {
 
         /** 투두 **/
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = TodoAdapter(data,
+        binding.recyclerView.adapter = TodoAdapter(
+            emptyList(),
             onClickDeleteIcon = {
-                deleteTask(it)
+                viewModel.deleteTask(it)
             }
         )
 
         //[투두] 투두 추가
         binding.btnTodo.setOnClickListener {
-            addTask()
+            val todo = Todo("", isDone = false, modify = true)
+            viewModel.addTask(todo)
         }
+
+        //관찰 UI Update
+        viewModel.todoLiveData.observe(this, Observer {
+            (binding.recyclerView.adapter as TodoAdapter).setData(it)
+        })
     }
 
-    //투두 삭제
-    private fun deleteTask(todo: Todo) {
-        data.remove(todo)
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-    }
 
-    //투두 추가
-    private fun addTask() {
-        val todo = Todo("", isDone = false, modify = true)
-        data.add(todo)
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-    }
 }
