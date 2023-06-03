@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DPTermProject</string>
+    <string name="btn_modify_todo">btn modify todo</string>
+    <string name="btn_delete_todo">btn delete todo</string>
+</resources>
