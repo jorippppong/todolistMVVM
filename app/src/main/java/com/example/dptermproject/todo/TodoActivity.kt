@@ -29,12 +29,22 @@ class TodoActivity : AppCompatActivity() {
         binding.month.text = convertMonthToString(month)
         binding.day.text = day
 
+
         /** 투두 **/
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = TodoAdapter(
             emptyList(),
             onClickDeleteIcon = {
                 viewModel.deleteTask(it)
+            },
+            onClickModifyIcon = {todo, newText->
+                viewModel.modifyTask(todo, newText)
+
+                //알림 전송
+                sendNotification(this, "New CheckList!", newText)
+            },
+            onClickCheckIcon={
+                viewModel.checkTodo(it)
             }
         )
 
