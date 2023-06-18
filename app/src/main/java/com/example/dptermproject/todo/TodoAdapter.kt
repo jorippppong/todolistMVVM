@@ -84,8 +84,6 @@ class TodoAdapter(
         viewHolder.binding.etTodo.requestFocus()
 
         viewHolder.binding.etTodo.setOnEditorActionListener { _, actionId, event ->
-            //Log.d("Yuri", "키보드 접근")
-            //Log.d("Yuri", "pressed key : $actionId")
             if ((actionId == EditorInfo.IME_ACTION_DONE) || (event.keyCode == KeyEvent.KEYCODE_ENTER)) {
                 listPosition.modify = false
                 viewHolder.binding.etTodo.isEnabled = false
@@ -98,8 +96,6 @@ class TodoAdapter(
                     //투두에 값이 없는 경우 ; 삭제
                     onClickDeleteIcon.invoke(listPosition)
                 } else {
-                    //투두에 값이 있는 경우 (신규 -> 추가 or 있는 -> 수정)
-                    //listPosition.text = viewHolder.binding.etTodo.text.toString() //task 갱신
                     val newText = viewHolder.binding.etTodo.text.toString()
                     onClickModifyIcon.invoke(listPosition, newText)
                 }

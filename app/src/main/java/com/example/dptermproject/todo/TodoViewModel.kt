@@ -30,5 +30,4 @@ class TodoViewModel: ViewModel() {
         data.remove(todo)
         todoLiveData.value = data
     }
-
 }
